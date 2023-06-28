@@ -1,15 +1,7 @@
-export const getQuery = () => {
-  let query = localStorage.getItem('query')
-  if (query) {
-    return JSON.parse(localStorage.getItem('query'))
-  } else {
-    return ''
-  }
-}
-export const getPage = () => {
-  let page = localStorage.getItem('page')
-  if (page) {
-    return JSON.parse(localStorage.getItem('page'))
+export const saveLocal = (key) => {
+  let isKeyExist = localStorage.getItem(`${key}`)
+  if (isKeyExist) {
+    return JSON.parse(localStorage.getItem(`${key}`))
   } else {
     return ''
   }

@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-//ui
-import { Input, InputAdornment, IconButton } from '@mui/material'
-import { SearchOutlinedIcon } from '../assets/icon'
+import { Input, InputAdornment, IconButton, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { Link } from 'react-router-dom'
 
-//files
+import { SearchOutlinedIcon, GridViewOutlinedIcon } from '../assets/icon'
 import { Photo, Select, Loading } from '../components'
 import { useGlobalContext } from '../context/context'
-import { getPage, getQuery } from '../func/functions'
+import { saveLocal } from '../func/functions'
+
 //links
 
 const clientID = `?client_id=fLH7ZpYet2yD2sGeXCCD7djRR4_LuiD7GCcbCD3QD74`
@@ -19,8 +19,8 @@ function Home() {
   const { color, loading, setLoading, width } = useGlobalContext()
   // const [loading, setLoading] = useState(false)
   const [photos, setPhotos] = useState([])
-  const [page, setPage] = useState(getPage())
-  const [query, setQuery] = useState(getQuery())
+  const [page, setPage] = useState(saveLocal('page'))
+  const [query, setQuery] = useState(saveLocal('query'))
   const [newImages, setNewImages] = useState(false)
   const [found, setFound] = useState({
     text: 'found',
@@ -59,11 +59,6 @@ function Home() {
     // }
     // const sortedData = data.results.sort(sortByLikes)
     setPhotos((oldPhotos) => {
-      // if (oldPhotos.length === found.number) {
-      //   console.log('here i want jump out')
-      // here we wanna jump
-      //   return
-      // }
       if (query && page === 1) {
         setFound({ show: true, number: data.total, text: 'found' })
         return data.results
@@ -89,6 +84,7 @@ function Home() {
 
   useEffect(() => {
     fetchImages()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
@@ -147,7 +143,14 @@ function Home() {
               </InputAdornment>
             }
           />
-          <Select />
+          <div className='flex'>
+            <Select />
+            <Link to='/topics'>
+              <Button variant='outlined' endIcon={<GridViewOutlinedIcon />}>
+                topics
+              </Button>
+            </Link>
+          </div>
         </form>
       </SearchWrapper>
 
@@ -182,7 +185,7 @@ export default Home
 
 const SearchWrapper = styled('div')(() => ({
   padding: '5rem 0 0 0',
-  width: ' 90vw',
+  width: '90vw',
   maxWidth: 'var(--max-width)',
   margin: '0 auto',
   form: {
@@ -203,6 +206,13 @@ const SearchWrapper = styled('div')(() => ({
     fontSize: ' 1.5rem !important',
     color: 'var(--clr-grey-5)',
     backgroundColor: 'transparent',
+  },
+  '.flex': {
+    // background: 'red',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'end',
   },
 }))
 

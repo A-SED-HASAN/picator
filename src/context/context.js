@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?'
+// const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?'
 
 const AppContext = React.createContext()
 

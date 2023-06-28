@@ -1,52 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { Loading } from '../components'
-import { useGlobalContext } from '../context/context'
+import { styled } from '@mui/material/styles'
+import { SingleTopic, Loading } from '../components'
+// import { useGlobalContext } from '../context/context'
 
 const Topics = () => {
-  const { loading } = useGlobalContext()
+  const [isLoading, setIsLoading] = useState(true)
   const [topics, setTopics] = useState()
 
-  const gets = async () => {
+  const getTopics = async () => {
+    setIsLoading(true)
     const response = await fetch(
       'https://api.unsplash.com/topics/?client_id=fLH7ZpYet2yD2sGeXCCD7djRR4_LuiD7GCcbCD3QD74'
     )
     const data = await response.json()
     setTopics(data)
+    setIsLoading(false)
   }
-  useEffect(() => {
-    gets()
-  }, [])
+
   console.log(topics)
+  useEffect(() => {
+    getTopics()
+  }, [])
+
+  if (isLoading) {
+    return <Loading fullPage />
+  }
   return (
-    <section className='section'>
-      {loading && <Loading />}
-      {!loading &&
-        topics.map((item) => {
-          const {
-            id,
-            title,
-            description,
-            total_photos,
-            cover_photo,
-            preview_photos,
-          } = item
-          return (
-            <div key={id}>
-              {/* <h2>{title}</h2>
-              <p>{description}</p>
-              <em>{total_photos}</em>
-              <img src={cover_photo.urls.small} alt={title} /> */}
-              <div className='square'>
-                {preview_photos.map((item) => {
-                  const { id, urls } = item
-                  return <img key={id} src={urls.small} alt={id} />
-                })}
-              </div>
-            </div>
-          )
-        })}
-    </section>
+    <Wrapper>
+      {topics.map((item) => {
+        return <SingleTopic key={item.id} {...item} />
+      })}
+    </Wrapper>
   )
 }
 
 export default Topics
+
+const Wrapper = styled('div')(() => ({}))

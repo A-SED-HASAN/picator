@@ -1,0 +1,142 @@
+/*
+=============== 
+Variables
+===============
+*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary-50: #ffffff;
+  --primary-100: #fefeff;
+  --primary-200: #d7e6fd;
+  --primary-300: #b0cdfb;
+  --primary-400: #89b4fa;
+  --primary-500: #629bf8;
+  --primary-600: #3b82f6;
+  --primary-700: #0b61ee;
+  --primary-800: #084bb8;
+  --primary-900: #063583;
+  --primary-950: #052a68;
+
+  --secondary-50: #fafafb;
+  --secondary-100: #efeff1;
+  --secondary-200: #d8dadf;
+  --secondary-300: #c2c5cc;
+  --secondary-400: #acb0ba;
+  --secondary-500: #969ba7;
+  --secondary-600: #7f8694;
+  --secondary-700: #6b7280;
+  --secondary-800: #515761;
+  --secondary-900: #383c43;
+  --secondary-950: #2b2e34;
+
+  --clr-black: #222;
+
+  --transition: all 0.3s linear;
+  --spacing: 0.1rem;
+  --radius: 0.25rem;
+  --light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  --max-width: 1170px;
+  --fixed-width: 620px;
+}
+/*
+=============== 
+Global Styles
+===============
+*/
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+&::-webkit-scrollbar {
+  width: 0.5rem;
+}
+&::-webkit-scrollbar-thumb {
+  background-color: var(--primary-200);
+  border-radius: 50rem;
+}
+&::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-300);
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--clr-white);
+  color: var(--secondary-950);
+  line-height: 1.5;
+  font-size: 0.875rem;
+  overflow-x: hidden;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: var(--spacing);
+  text-transform: capitalize;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+h4 {
+  font-size: 0.875rem;
+}
+p {
+  margin-bottom: 1.25rem;
+}
+@media screen and (min-width: 800px) {
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 1.75rem;
+  }
+  h4 {
+    font-size: 1rem;
+  }
+  body {
+    font-size: 1rem;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1;
+  }
+}
+/*  global classes */
+
+/* section */
+.section {
+  width: 90vw;
+  margin: 0 auto;
+  max-width: var(--max-width);
+}
+
+@media screen and (min-width: 992px) {
+  .section {
+    width: 95vw;
+  }
+}
+
+

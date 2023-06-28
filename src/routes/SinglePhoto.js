@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { styled } from '@mui/material/styles'
-import { useParams } from 'react-router-dom'
-import moment from 'moment/moment'
+import { Link, useParams } from 'react-router-dom'
 
+import { Button, Divider, Chip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+import moment from 'moment/moment'
 import { Blurhash } from 'react-blurhash'
-import { Link } from 'react-router-dom'
 
 import { useGlobalContext } from '../context/context'
-import { Loading } from '../components'
-import { Button, Divider } from '@mui/material'
+import { Loading, Photo } from '../components'
 
 import {
   RemoveRedEyeOutlinedIcon,
@@ -16,7 +16,10 @@ import {
   FileDownloadOutlinedIcon,
   InsertLinkOutlinedIcon,
   LocationOnOutlinedIcon,
+  CollectionsOutlinedIcon,
+  PhotoSizeSelectActualOutlinedIcon,
 } from '../assets/icon'
+
 const SinglePhoto = () => {
   const { id } = useParams()
   const { width } = useGlobalContext()
@@ -41,118 +44,176 @@ const SinglePhoto = () => {
   if (loading) {
     return <Loading fullPage />
   }
-  if (!loading) {
-    const {
-      alt_description,
-      blur_hash,
-      color,
-      id: idP,
-      created_at,
-      downloads,
-      likes,
-      urls: { regular },
-      user: {
-        name,
-        portfolio_url,
-        profile_image: { medium, small },
-        instagram_username,
-        location,
-        total_collections,
-        total_likes,
-        total_photos,
-      },
-      links: { download, download_location, html, self },
-      related_collections,
 
-      tags,
-      topics,
-
-      views,
-    } = photo
-    console.log(photo)
-
-    return (
-      <Wrapper width={width}>
-        {!isImageLoaded && (
-          <Blurhash
-            hash={blur_hash || 'LbB}RHL}56-=NGayt8WBWBj[ofjt'}
-            width={`100%`}
-            height={`90vh`}
-            resolutionX={32}
-            resolutionY={32}
-            punch={1}
-          />
-        )}
-
-        <img
-          src={regular}
-          alt={alt_description}
-          style={{ display: isImageLoaded ? 'block' : 'none' }}
-          onLoad={() => {
-            setIsImageLoaded(true)
-          }}
+  const {
+    alt_description,
+    blur_hash,
+    color,
+    id: idP,
+    created_at,
+    downloads,
+    likes,
+    urls: { regular },
+    user: {
+      name,
+      // links: { followers, following, likes: liekedPhoto, photos, portfolio },
+      profile_image: { small },
+      instagram_username,
+      location,
+      total_collections,
+      total_likes,
+      total_photos,
+    },
+    links: { download, download_location, html, self },
+    related_collections: { results, total },
+    tags_preview,
+    topics,
+    //add topics with little chip and routing to their pages
+    views,
+  } = photo
+  const photographerDetails = [
+    {
+      id: 1,
+      title: 'instagram',
+      value: instagram_username,
+      icon: <InsertLinkOutlinedIcon />,
+    },
+    {
+      id: 2,
+      title: 'location',
+      value: location,
+      icon: <LocationOnOutlinedIcon />,
+    },
+    {
+      id: 3,
+      title: 'collections',
+      value: total_collections,
+      icon: <CollectionsOutlinedIcon />,
+    },
+    {
+      id: 4,
+      title: 'likes',
+      value: total_likes,
+      icon: <ThumbUpOutlinedIcon />,
+    },
+    {
+      id: 5,
+      title: 'No. photos',
+      value: total_photos,
+      icon: <PhotoSizeSelectActualOutlinedIcon />,
+    },
+  ]
+  console.log(results)
+  return (
+    <Wrapper width={width}>
+      {!isImageLoaded && (
+        <Blurhash
+          hash={blur_hash || 'LbB}RHL}56-=NGayt8WBWBj[ofjt'}
+          width={`100%`}
+          height={width > 800 ? `90vh` : '50vh'}
+          resolutionX={32}
+          resolutionY={32}
+          punch={1}
         />
+      )}
+      <img
+        src={regular}
+        alt={alt_description}
+        style={{ display: isImageLoaded ? 'block' : 'none' }}
+        onLoad={() => {
+          setIsImageLoaded(true)
+        }}
+      />
 
-        <h3>description : {alt_description} </h3>
-        <Button
-          startIcon={<FileDownloadOutlinedIcon />}
-          variant='outlined'
-          href={download}>
-          download
-        </Button>
-        <div className='row'>
-          <h3> views : {views.toLocaleString()}</h3>
-          <RemoveRedEyeOutlinedIcon />
-        </div>
-        <div className='row'>
-          <h3> likes : {likes.toLocaleString()}</h3>
-          <ThumbUpOutlinedIcon />
-        </div>
-        <div className='row'>
-          <h3> downloads : {downloads.toLocaleString()}</h3>
-          <FileDownloadOutlinedIcon />
-        </div>
-        <div className='row'>
-          <h3>released in : {moment(`${created_at}`, 'YYYYMMDD').fromNow()}</h3>
-        </div>
-
+      <h3>details : {alt_description} </h3>
+      <Button
+        startIcon={<FileDownloadOutlinedIcon />}
+        variant='outlined'
+        href={download}>
+        download
+      </Button>
+      <div className='row'>
+        <h3> views : {views.toLocaleString()}</h3>
+        <RemoveRedEyeOutlinedIcon />
+      </div>
+      <div className='row'>
+        <h3> likes : {likes.toLocaleString()}</h3>
+        <ThumbUpOutlinedIcon />
+      </div>
+      <div className='row'>
+        <h3> downloads : {downloads.toLocaleString()}</h3>
+        <FileDownloadOutlinedIcon />
+      </div>
+      <div className='row'>
+        <h3>released in : {moment(`${created_at}`, 'YYYYMMDD').fromNow()}</h3>
+      </div>
+      <div className='information'>
         <div className='photographer-information'>
-          <div className='item-1'>
-            <h3> photographer</h3>
-            <div className='flex'>
-              <h4>name : {name}</h4>
-              <img src={medium} alt={name} />
-            </div>
-            {instagram_username && (
-              <p>
-                <InsertLinkOutlinedIcon /> {instagram_username}
-              </p>
-            )}
-            {location && (
-              <p>
-                <LocationOnOutlinedIcon />
-                {location}
-              </p>
-            )}
+          <Divider>photographer</Divider>
+          <div className='flex'>
+            <h4>name : {name}</h4>
+            <img src={small} alt={name} />
           </div>
-          <div className='item-2'>tags</div>
+          <div className='grid-6'>
+            {photographerDetails.map((item) => {
+              const { id, title, value, icon } = item
+              return (
+                value !== 0 &&
+                value && (
+                  <p className='photographer-detail' key={id}>
+                    <span> {icon}</span>
+                    {title} : {value}
+                  </p>
+                )
+              )
+            })}
+          </div>
         </div>
+        <div className='tags'>
+          <Divider>tags</Divider>
+          {tags_preview.map((item) => {
+            const { title } = item
+            return (
+              <Chip
+                sx={{ margin: '1rem .5rem' }}
+                label={title}
+                key={title}
+                variant='contained'
+                onClick={() => {
+                  //link or navigate
+                  console.log(true)
+                }}
+              />
+            )
+          })}
+        </div>
+        <div className='collections'>
+          {/* must completed */}
+          <Divider>related collections founded : {total}</Divider>
+          <div className='collections-photos'>
+            {results.map((item, index) => {
+              const { cover_photo } = item
+              return <Photo key={index} {...cover_photo} collection />
+            })}
+          </div>
+        </div>
+      </div>
 
-        <Link to='/'>
-          <Button variant='contained'>back</Button>
-        </Link>
-      </Wrapper>
-    )
-  }
+      <Link to='/'>
+        <Button variant='contained'>back</Button>
+      </Link>
+    </Wrapper>
+  )
 }
+
 export default SinglePhoto
 
 const Wrapper = styled('div')(({ width }) => ({
   display: 'grid',
   placeItems: 'center',
   margin: 'auto',
-  padding: '3rem',
-  width: '80vw',
+  padding: width > 800 ? '3rem' : '1rem',
+  width: width > 800 ? '80vw' : '95vw',
   img: {
     maxHeight: '90vh',
     maxWidth: '100%',
@@ -176,14 +237,18 @@ const Wrapper = styled('div')(({ width }) => ({
       paddingTop: '.8rem',
     },
   },
-  '.photographer-information': {
+  '.information': {
+    padding: width > 800 ? '3rem' : '1rem',
     width: '100%',
     display: 'grid',
+    gap: '3rem',
     gridTemplateColumns: width > 800 ? '1fr 1fr' : '1fr',
+
     h3: {
       textAlign: 'center',
     },
-    'div.flex': {
+
+    '.flex': {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -192,12 +257,25 @@ const Wrapper = styled('div')(({ width }) => ({
         marginTop: '2rem',
       },
     },
-    p: { display: 'flex', alignItems: 'center' },
-    '.item-1': {
-      padding: '4rem',
+    '.grid-6': {
+      display: 'grid',
+      gridTemplateColumns: width > 800 ? '1fr 1fr' : '1fr',
+      gap: '1rem',
+      '.photographer-detail': {
+        display: 'flex',
+        alignItems: 'center',
+        span: {
+          padding: '1rem',
+          marginTop: '.5rem',
+        },
+      },
     },
-    '.item-2': {
-      padding: '4rem',
+    '.collections': {
+      gridColumn: '2 span',
+      '.collections-photos': {
+        background: 'red',
+        display: 'flex',
+      },
     },
   },
 }))

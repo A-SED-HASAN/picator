@@ -1,10 +1,8 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import Home from './routes/Home'
-import SinglePhoto from './routes/SinglePhoto'
-import ErrorPage from './routes/ErrorPage'
-import Topics from './routes/Topics'
+import { Home, SinglePhoto, ErrorPage, Topics } from './routes'
+
 function App() {
   return (
     <Routes>

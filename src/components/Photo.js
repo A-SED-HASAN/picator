@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Blurhash } from 'react-blurhash'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FavoriteBorderOutlinedIcon } from '../assets/icon'
 import { styled } from '@mui/material/styles'
 
@@ -12,10 +12,11 @@ const Photo = ({
   blur_hash,
   urls: { regular },
   likes,
+  collection,
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false)
   return (
-    <SinglePhotoWrapper>
+    <SinglePhotoWrapper collection={collection}>
       <Link to={`photo/${id}`}>
         <article>
           {!isImageLoaded && (
@@ -55,10 +56,11 @@ const Photo = ({
 
 export default Photo
 
-const SinglePhotoWrapper = styled('div')(() => ({
+const SinglePhotoWrapper = styled('div')(({ collection }) => ({
   position: 'relative',
   overflow: 'hidden',
-
+  maxHeight: collection && '33.3vh',
+  maxWidth: collection && '33.3%',
   img: {
     width: '100%',
     height: '100%',
@@ -74,12 +76,6 @@ const SinglePhotoWrapper = styled('div')(() => ({
   },
   p: {
     marginBottom: '0',
-  },
-
-  '.user-img': {
-    width: '2.5rem',
-    height: '2.5rem',
-    borderRadius: '50%',
   },
   '.photo-info': {
     position: 'absolute',
