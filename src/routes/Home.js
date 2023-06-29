@@ -1,129 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
-
+import React from 'react'
 import { Input, InputAdornment, IconButton, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 
 import { SearchOutlinedIcon, GridViewOutlinedIcon } from '../assets/icon'
-import { Photo, Select, Loading } from '../components'
+import { Photo, SelectColor, Loading } from '../components'
 import { useGlobalContext } from '../context/context'
-import { saveLocal } from '../func/functions'
 
 //links
 
-const clientID = `?client_id=fLH7ZpYet2yD2sGeXCCD7djRR4_LuiD7GCcbCD3QD74`
-const mainUrl = `https://api.unsplash.com/photos/`
-const searchUrl = `https://api.unsplash.com/search/photos/`
-
 function Home() {
-  const { color, loading, setLoading, width } = useGlobalContext()
-  // const [loading, setLoading] = useState(false)
-  const [photos, setPhotos] = useState([])
-  const [page, setPage] = useState(saveLocal('page'))
-  const [query, setQuery] = useState(saveLocal('query'))
-  const [newImages, setNewImages] = useState(false)
-  const [found, setFound] = useState({
-    text: 'found',
-    number: 0,
-    show: false,
-  })
-  const mounted = useRef(false)
-
-  const fetchImages = async () => {
-    setLoading(true)
-    let url
-    const urlPage = `&page=${page}`
-    const urlQuery = `&query=${query}`
-    if (query) {
-      if (color) {
-        const urlColor = `&color=${color}`
-        url = `${searchUrl}${clientID}${urlPage}${urlQuery}${urlColor}`
-      } else {
-        url = `${searchUrl}${clientID}${urlPage}${urlQuery}`
-      }
-    } else {
-      url = `${mainUrl}${clientID}${urlPage}`
-    }
-    const response = await fetch(url)
-    const data = await response.json()
-    // const sortByLikes = (a, b) => {
-    //   const valueA = a.likes
-    //   const valueB = b.likes
-    //   if (valueA > valueB) {
-    //     return -1
-    //   }
-    //   if (valueA < valueB) {
-    //     return 1
-    //   }
-    //   return 0
-    // }
-    // const sortedData = data.results.sort(sortByLikes)
-    setPhotos((oldPhotos) => {
-      if (query && page === 1) {
-        setFound({ show: true, number: data.total, text: 'found' })
-        return data.results
-      } else if (query) {
-        const ph = [...oldPhotos, ...data.results]
-        setFound({
-          show: true,
-          number: data.total - ph.length,
-          text: 'remain',
-        })
-        if (ph.length === data.total) {
-          setNewImages(false)
-          setLoading(false)
-        }
-        return ph
-      } else {
-        return [...oldPhotos, ...data]
-      }
-    })
-    setNewImages(false)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchImages()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
-
-  useEffect(() => {
-    localStorage.setItem('query', JSON.stringify(query))
-    localStorage.setItem('page', JSON.stringify(page))
-  }, [query, page])
-
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true
-      return
-    }
-    if (!newImages) return
-    if (loading) return
-    setPage((oldPage) => oldPage + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newImages])
-
-  const event = () => {
-    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
-      setNewImages(true)
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', event)
-
-    return () => window.removeEventListener('scroll', event)
-  }, [])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!query) return
-    if (page === 1) {
-      fetchImages()
-    }
-    setPage(1)
-  }
+  const { homeLoading, width, query, setQuery, handleSubmit, found, photos } =
+    useGlobalContext()
 
   return (
     <main>
@@ -144,7 +32,7 @@ function Home() {
             }
           />
           <div className='flex'>
-            <Select />
+            <SelectColor />
             <Link to='/topics'>
               <Button variant='outlined' endIcon={<GridViewOutlinedIcon />}>
                 topics
@@ -175,7 +63,7 @@ function Home() {
           )}
         </div>
 
-        {loading && <Loading />}
+        {homeLoading && <Loading />}
       </PhotosWrapper>
     </main>
   )

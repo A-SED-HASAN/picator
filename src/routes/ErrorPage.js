@@ -1,22 +1,17 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
 import { Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const ErrorPage = () => {
-  const navigate = useNavigate()
   return (
     <Wrapper>
       <div>
         <h1>404</h1>
         <h3>we haven't this photo here !</h3>
-        <Button
-          onClick={() => {
-            navigate('/')
-          }}
-          variant='contained'>
-          wanna back ?
-        </Button>
+        <Link to=''>
+          <Button variant='contained'>wanna back ?</Button>
+        </Link>
       </div>
     </Wrapper>
   )

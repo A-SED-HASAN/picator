@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Blurhash } from 'react-blurhash'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FavoriteBorderOutlinedIcon } from '../assets/icon'
 import { styled } from '@mui/material/styles'
+import { useGlobalContext } from '../context/context'
 
 import moment from 'moment'
 const Photo = ({
@@ -14,10 +15,11 @@ const Photo = ({
   likes,
   collection,
 }) => {
+  const { width } = useGlobalContext()
   const [isImageLoaded, setIsImageLoaded] = useState(false)
   return (
-    <SinglePhotoWrapper collection={collection}>
-      <Link to={`photo/${id}`}>
+    <SinglePhotoWrapper collection={collection} width={width}>
+      <Link to={`/photo/${id}`}>
         <article>
           {!isImageLoaded && (
             <Blurhash
@@ -38,16 +40,18 @@ const Photo = ({
               setIsImageLoaded(true)
             }}
           />
-          <div className='photo-info'>
-            <div>
-              <FavoriteBorderOutlinedIcon
-                fontSize='small'
-                className='heart-icon'
-              />
-              <span>{likes}</span>
+          {!collection && (
+            <div className='photo-info'>
+              <div>
+                <FavoriteBorderOutlinedIcon
+                  fontSize='small'
+                  className='heart-icon'
+                />
+                <span>{likes}</span>
+              </div>
+              {moment(`${created_at}`, 'YYYYMMDD').fromNow()}
             </div>
-            {moment(`${created_at}`, 'YYYYMMDD').fromNow()}
-          </div>
+          )}
         </article>
       </Link>
     </SinglePhotoWrapper>
@@ -56,11 +60,11 @@ const Photo = ({
 
 export default Photo
 
-const SinglePhotoWrapper = styled('div')(({ collection }) => ({
+const SinglePhotoWrapper = styled('div')(({ collection, width }) => ({
   position: 'relative',
   overflow: 'hidden',
-  maxHeight: collection && '33.3vh',
-  maxWidth: collection && '33.3%',
+  width:
+    collection && width > 800 ? '50%' : collection && width < 800 && '100%',
   img: {
     width: '100%',
     height: '100%',

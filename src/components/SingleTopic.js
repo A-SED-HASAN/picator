@@ -35,7 +35,7 @@ export default SingleTopic
 const Wrapper = styled('article')(() => ({
   textAlign: 'center',
   padding: '2rem ',
-  img: { padding: '1rem' },
+  '>img': { padding: '1rem', maxWidth: '100%' },
   '.preview': {
     display: 'flex',
     justifyContent: 'center',

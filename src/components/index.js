@@ -1,5 +1,9 @@
 import Loading from './Loading'
 import Photo from './Photo'
-import Select from './Select'
+import SelectColor from './SelectColor'
 import SingleTopic from './SingleTopic'
-export { Loading, Photo, Select, SingleTopic }
+
+import Tags from './details/Tags'
+import Photographer from './details/Photographer'
+
+export { Loading, Photo, SelectColor, SingleTopic, Tags, Photographer }
