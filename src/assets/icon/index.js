@@ -9,6 +9,8 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined'
 import PhotoSizeSelectActualOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActualOutlined'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
+import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 export {
   FavoriteBorderOutlinedIcon,
   SearchOutlinedIcon,
@@ -21,4 +23,6 @@ export {
   GridViewOutlinedIcon,
   CollectionsOutlinedIcon,
   PhotoSizeSelectActualOutlinedIcon,
+  CalendarMonthOutlinedIcon,
+  CameraAltOutlinedIcon,
 }

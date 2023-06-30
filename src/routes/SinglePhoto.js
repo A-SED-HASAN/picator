@@ -4,17 +4,10 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Divider } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-import moment from 'moment/moment'
 import { Blurhash } from 'react-blurhash'
 
 import { useGlobalContext } from '../context/context'
-import { Loading, Photo, Photographer, Tags } from '../components'
-
-import {
-  RemoveRedEyeOutlinedIcon,
-  FileDownloadOutlinedIcon,
-  ThumbUpOutlinedIcon,
-} from '../assets/icon'
+import { Loading, Photo, Photographer, Tags, Main } from '../components'
 
 const SinglePhoto = () => {
   const { id } = useParams()
@@ -39,21 +32,11 @@ const SinglePhoto = () => {
   const {
     alt_description,
     blur_hash,
-    // color,
-    // id: idP,
-    created_at,
-    downloads,
-    likes,
     urls: { regular },
-    links: { download },
-    related_collections: { results, total },
+    related_collections: { results },
     tags_preview,
-    // topics,
-    //add topics with little chip and routing to their pages
-    views,
   } = photo
 
-  console.log(results)
   return (
     <Wrapper width={width}>
       {!isImageLoaded && (
@@ -74,29 +57,7 @@ const SinglePhoto = () => {
           setIsImageLoaded(true)
         }}
       />
-
-      <h3>details : {alt_description} </h3>
-      <Button
-        startIcon={<FileDownloadOutlinedIcon />}
-        variant='outlined'
-        href={download}>
-        download
-      </Button>
-      <div className='row'>
-        <h3> views : {views.toLocaleString()}</h3>
-        <RemoveRedEyeOutlinedIcon />
-      </div>
-      <div className='row'>
-        <h3> likes : {likes.toLocaleString()}</h3>
-        <ThumbUpOutlinedIcon />
-      </div>
-      <div className='row'>
-        <h3> downloads : {downloads.toLocaleString()}</h3>
-        <FileDownloadOutlinedIcon />
-      </div>
-      <div className='row'>
-        <h3>released in : {moment(`${created_at}`, 'YYYYMMDD').fromNow()}</h3>
-      </div>
+      <Main />
       <div className='information'>
         <Photographer />
         <Tags array={tags_preview} />
@@ -108,6 +69,8 @@ const SinglePhoto = () => {
               const { cover_photo, tags, title } = item
               if (id !== cover_photo.id)
                 return <Photo key={index} {...cover_photo} collection />
+
+              return null
             })}
           </div>
         </div>
@@ -132,24 +95,6 @@ const Wrapper = styled('div')(({ width }) => ({
     maxHeight: '90vh',
     maxWidth: '100%',
     marginBottom: '3rem',
-  },
-  button: {
-    margin: '2rem 0',
-  },
-  a: {
-    margin: '2rem 0',
-  },
-  '.row': {
-    textAlign: 'start',
-    width: width < 800 ? '100%' : '500px',
-    padding: '2rem 1rem',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-    h3: {
-      paddingTop: '.8rem',
-    },
   },
   '.information': {
     padding: width > 800 ? '3rem' : '1rem',

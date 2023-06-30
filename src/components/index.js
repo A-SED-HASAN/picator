@@ -5,5 +5,6 @@ import SingleTopic from './SingleTopic'
 
 import Tags from './details/Tags'
 import Photographer from './details/Photographer'
+import Main from './details/Main'
 
-export { Loading, Photo, SelectColor, SingleTopic, Tags, Photographer }
+export { Loading, Photo, SelectColor, SingleTopic, Tags, Photographer, Main }
